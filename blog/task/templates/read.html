@@ -1,0 +1,48 @@
+{%block content%}
+
+<div>
+    <h3>{{post.subject}}</h3>
+    <p>{{post.content|linebreaksbr}}</p>
+</div>
+
+{% if user.is_authenticated %}
+<form action="{%url 'c_create' post.id%}" method="POST">
+    {%csrf_token%}
+    <div class="input-group mt-5 mb-5">
+        <input type="text" name="comment" class="form-control" placeholder="댓글을 입력하세요">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="checkbox" name="anonymous" value="1">
+                <span style="font-size: 0.7em;">익명</span>
+            </div>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-danger">댓글쓰기</button>
+        </div>
+    </div>
+</form>
+{% endif %}
+
+<div>
+        <ul class="list-group mb-2">
+            {%for c in comment%}
+            <li class="list-group-item list-group-item-light">
+                {%if c.anonymous == True%}
+                <span style="font-weight: bold;font-size:0.7em;">익명</span>
+                {%else%}
+                <span style="font-weight: bold;font-size:0.7em;">{{c.user}}</span>
+                {%endif%}
+                <br>
+                {{c.content}}
+            </li>
+            {%endfor%}
+        </ul>
+    </div>
+
+<a href="/">돌아가기</a>
+
+{%if request.user == post.user or request.user.is_staff%}
+    <a href="{%url 'update' post.id%}">글수정</a>
+    <a href="{%url 'delete' post.id%}">글삭제</a>
+{%endif%}
+{%endblock%}

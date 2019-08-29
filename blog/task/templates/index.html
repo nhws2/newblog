@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>hyevely BLOG</title>
+</head>
+<body>
+<br><br>
+<h1><center>Welcome to hyevely BLOG</center></h1>
+<br><br>
+
+{% if user.is_authenticated %}
+<p>환영합니다 {{user.username}}님</p>
+<form action="{%url 'logout'%}" method="POST">
+    {%csrf_token%}
+    <input type="submit" value="로그아웃">
+</form>
+{% else %}
+<h5>Please Login or Sign Up!</h5>
+<a href="{%url 'signup'%}">회원가입</a>
+<a href="{%url 'login'%}">로그인</a>
+{% endif %}
+
+
+{%if user.is_authenticated%}
+<a href={%url 'create'%}>
+    <button>글쓰기</button>
+</a>
+{%else%}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr><h3><center>If you login, you can write on this bulletin board.</center></h3>
+{%endif%}
+
+
+{%for p in posts%}
+    <p>글 번호 : {{p.pk}}</p>
+    <a href = "{%url 'read' p.id%}">
+        글 제목 : {{p.subject}}
+    </a>
+    <p>글 내용 : {{p.content|truncatewords:50}}</p>
+    <p>글 작성 시간 : {{p.created_at}}</p>
+    <p>글 수정 시간 : {{p.updated_at}}</p>
+    <hr>
+{%endfor%}
+
+<nav>
+    <ul class="pagination">  
+        {% if posts.has_previous %}
+        <li class="page-item "><a class="page-link" href="?page={{ posts.previous_page_number }}">&lt;</a></li>
+        {% endif %} 
+        {% if posts.number > 2 %}
+        <li class="page-item"><a class="page-link" href="?page=1">&lt;&lt;</a></li>
+        {%endif%}
+        {% if posts.has_next %}
+        <li class="page-item ml-auto"><a class="page-link" href="?page={{ posts.next_page_number }}">&gt;</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
